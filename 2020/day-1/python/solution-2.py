@@ -1,6 +1,6 @@
 import itertools
 
-input = open('nums.txt', 'r') 
+input = open('../input.txt', 'r') 
 tmp = input.readlines()
 
 nums = []

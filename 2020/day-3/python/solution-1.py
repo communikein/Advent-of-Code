@@ -27,7 +27,7 @@ current_y = 0
 move_x = 3
 move_y = 1
 
-input_data = read_input_data('input.txt')
+input_data = read_input_data('../input.txt')
 map_data, map_height, map_width = fix_map(input_data)
 
 trees = 0

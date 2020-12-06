@@ -47,7 +47,7 @@ def format_data(input_data):
 
 	return result
 
-input_data = read_input_data('input.txt')
+input_data = read_input_data('../input.txt')
 formatted_data = format_data(input_data)
 
 print(sum(formatted_data))

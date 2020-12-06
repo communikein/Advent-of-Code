@@ -45,7 +45,7 @@ def fix_map(starting_map):
 
 	return final_map, final_height, final_width
 
-input_data = read_input_data('input.txt')
+input_data = read_input_data('../input.txt')
 map_data, map_height, map_width = fix_map(input_data)
 
 trees = 0

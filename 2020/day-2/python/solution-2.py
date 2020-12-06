@@ -1,6 +1,6 @@
 import itertools
 
-input_file = open('input.txt', 'r') 
+input_file = open('../input.txt', 'r') 
 input_data = input_file.readlines()
 
 rules = [] 

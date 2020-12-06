@@ -37,7 +37,7 @@ def check_passports(passports):
 
 	return result
 
-input_data = read_input_data('input.txt')
+input_data = read_input_data('../input.txt')
 fixed_data = format_input_data(input_data)
 valid_passports = check_passports(fixed_data)
 print(len(valid_passports))

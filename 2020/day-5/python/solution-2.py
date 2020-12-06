@@ -76,7 +76,7 @@ def find_my_seat(input_data, all_seats_ids):
 		current_seat = compute_seat(current_seat_row, current_seat_col)
 		
 		if my_seat == {}:
-			#print('Current row:', current_seat_row)
+			print('Current row:', current_seat_row)
 				
 			''' 
 			If this is the first seat of a new row:
@@ -84,33 +84,31 @@ def find_my_seat(input_data, all_seats_ids):
 				- empty current_seats
 			'''
 			if current_seat_row != list(current_seats.keys())[0]:
-				#print('NEW ROW')
-				#print('Transferring current_seats into previous_seats')
+				print('NEW ROW')
+				print('Transferring current_seats into previous_seats')
 				previous_seats = current_seats
-				#print('Creating current_seats for row', current_seat_row)
+				print('Creating current_seats for row', current_seat_row)
 				current_seats = {current_seat_row: []}
-				#print('Current seats:', current_seats)
-				#print('Previous seats:', previous_seats)
+				print('Current seats:', current_seats)
+				print('Previous seats:', previous_seats)
 
-			#print('Added seat', current_seat_col, 'to current row')
+			print('Added seat', current_seat_col, 'to current row')
 			current_seats[current_seat_row].append(current_seat_col)
-			#print('Current seats:', current_seats)
+			print('Current seats:', current_seats)
 			
 			''' If the previous row is a candidate for my seat, look for it '''
-			#print('Looking for missing seat')
-			#print(previous_seats[current_seat_row-1])
+			print('Looking for missing seat')
+			print(previous_seats[current_seat_row-1])
 			my_seat = find_missing_seat(current_seat_row-1, previous_seats[current_seat_row-1], all_seats_ids)
-			#print('FOUND MISSING SEAT')
-			#print(my_seat)
-			#print()
+			print('FOUND MISSING SEAT')
+			print(my_seat)
+			print()
 
 	return my_seat
 
 
-input_data = read_input_data('input.txt')
+input_data = read_input_data('../input.txt')
 formatted_data = format_input_data(input_data)
-#for i in formatted_data:
-#	print(i)
 seats = find_seats(formatted_data)
 my_seat = find_my_seat(formatted_data, list(seats.keys()))
 

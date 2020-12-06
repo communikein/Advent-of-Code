@@ -29,7 +29,7 @@ def find_seats(input_data):
 
 	return result
 
-input_data = read_input_data('input.txt')
+input_data = read_input_data('../input.txt')
 seats = find_seats(input_data)
 
 print(len(seats))
