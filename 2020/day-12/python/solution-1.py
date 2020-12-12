@@ -56,7 +56,7 @@ def move_ship(ship, command):
 
 
 
-input_data = read_input_data('input.txt')
+input_data = read_input_data('../input.txt')
 commands = get_commands(input_data)
 
 ship = {'direction': EAST, 'coords': [0, 0]}

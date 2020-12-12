@@ -19,7 +19,7 @@ def sum_combinations(previous_25):
 	return result
 
 
-input_data = read_input_data('input.txt')
+input_data = read_input_data('../input.txt')
 
 cont = 0
 while cont < len(input_data):

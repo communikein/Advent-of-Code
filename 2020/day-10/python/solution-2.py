@@ -45,7 +45,7 @@ def count_subtrees(data, counter=[0], cache={}):
 		cache[current_adapter] = counter[0]
 
 
-input_data = read_input_data('input.txt')
+input_data = read_input_data('../input.txt')
 ordered_data = prepare_data(input_data)
 
 counter = [0]

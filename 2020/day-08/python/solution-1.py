@@ -24,7 +24,7 @@ def format_data(input_data):
 
 
 acc = 0
-input_data = read_input_data('input.txt')
+input_data = read_input_data('../input.txt')
 instructions = format_data(input_data)
 
 cont = 0

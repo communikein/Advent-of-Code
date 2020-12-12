@@ -88,7 +88,7 @@ def traverse_tree(tree, total=0):
 		return sum_children
 
 
-input_data = read_input_data('input.txt')
+input_data = read_input_data('../input.txt')
 bag_rules = format_data(input_data)
 
 global debug

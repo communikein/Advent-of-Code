@@ -118,7 +118,7 @@ def execute_command(ship, waypoint, command):
 global debug
 debug = True
 
-input_data = read_input_data('input.txt')
+input_data = read_input_data('../input.txt')
 commands = get_commands(input_data)
 
 ship = SHIP_STARTING_COORDS

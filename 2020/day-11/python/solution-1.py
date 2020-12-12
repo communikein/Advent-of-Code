@@ -98,7 +98,7 @@ def seat_action(data, seat_x, seat_y):
 	return changes, seat_value
 
 
-input_data = read_input_data('input.txt')
+input_data = read_input_data('../input.txt')
 
 changes = 1
 occupied_seats = 0

@@ -24,7 +24,7 @@ def format_data(data):
 	return result
 
 
-input_data = read_input_data('input.txt')
+input_data = read_input_data('../input.txt')
 ordered_data = format_data(input_data)
 
 one_diff = ordered_data.count(1)

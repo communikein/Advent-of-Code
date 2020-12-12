@@ -87,7 +87,7 @@ def traverse_tree(tree, tree_count, result=[]):
 				break
 
 
-input_data = read_input_data('input.txt')
+input_data = read_input_data('../input.txt')
 bag_rules = format_data(input_data)
 
 global debug

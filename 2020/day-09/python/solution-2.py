@@ -34,7 +34,7 @@ def compute_kwindows(input_data, k):
 	pointer
 
 
-input_data = read_input_data('input.txt')
+input_data = read_input_data('../input.txt')
 off_number = find_off_number(input_data)
 
 list_to_sum = []
