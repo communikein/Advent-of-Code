@@ -18,11 +18,29 @@ def read_input_data(file):
 
 	return result
 
-def apply_mask(mask, data):
+def apply_mask_to_address(address, mask):
 	
-	result = [mask[i] if mask[i] != 'X' else data[i] for i in range(len(mask))]
+	result = ['']
+	index = 0
+	while index < len(mask):
 
-	return ''.join(result)
+		if mask[index] == '0':
+
+			result = [addr + address[index] for addr in result]
+		
+		elif mask[index] == '1':
+
+			result = [addr + mask[index] for addr in result]
+
+		else:
+
+			result_0 = [addr + '0' for addr in result]
+			result_1 = [addr + '1' for addr in result]
+			result = result_0 + result_1
+
+		index += 1
+	
+	return result
 
 
 input_data = read_input_data('../input.txt')
@@ -32,13 +50,16 @@ mask = ''
 for op_index in sorted(input_data):
 
 	if 'mask' in input_data[op_index]:
+		
 		mask = input_data[op_index]['mask']
 
 	else:
 		mem_val = input_data[op_index]['mem_val']
-		mem_index = input_data[op_index]['mem_index']
+		mem_addr = input_data[op_index]['mem_index']
 
-		val = apply_mask(mask, mem_val)
-		data[mem_index] = int(val, 2)
+		new_addresses = apply_mask_to_address(f'{mem_addr:036b}', mask)
+
+		for addr in new_addresses:
+			data[int(addr, 2)] = int(mem_val, 2)
 
 print(sum(data.values()))
