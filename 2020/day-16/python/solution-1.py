@@ -1,143 +1,80 @@
-import math
+import re
+from datetime import datetime 
 
-NORTH = 0
-EAST = 1
-SOUTH = 2
-WEST = 3
+tickets_rules_re ='(?:(\w+): ([\d-]+) or ([\w-]+))'
+ticket_numbers_re = '((?:\d,?)+)\n?'
 
-TOP_RIGHT = 0
-BOTTOM_RIGHT = 1
-BOTTOM_LEFT = 2
-TOP_LEFT = 3
-
-
-MOVE_WAYPOINT = ['N', 'E', 'S', 'W']
-TURN_WAYPOINT_LEFT = 'L'
-TURN_WAYPOINT_RIGHT = 'R'
-
-MOVE_SHIP_FORWARD = 'F'
-
-SHIP_STARTING_COORDS = [0, 0]
-WAYPOINT_STARTING_COORDS = [SHIP_STARTING_COORDS[0] + 10, SHIP_STARTING_COORDS[1] + 1]
-
-COORDS_X = 0
-COORDS_Y = 1
+starting_time = datetime.now()
 
 def read_input_data(file):
 	with open(file, 'r') as input_file:
-		result = input_file.read().split('\n')
+		temp = input_file.read().split('\n\n')
 
-	return result
-
-def get_commands(data):
-	result = []
+	# Gather tickets rules
+	ticket_rules_matches = re.findall(tickets_rules_re, temp[0])
+	rules = {rule[0]: [{'min': int(ranges.split('-')[0]), 'max': int(ranges.split('-')[1])} for ranges in rule[1:]] for rule in ticket_rules_matches}
 	
-	for line in data:
-		result.append({'cmd': line[0], 'arg': int(line[1:])})
+	# Gather nearby tickets numbers
+	others_ticket_numbers_matches = re.findall(ticket_numbers_re, temp[2])
+	other_tickets = [list(map(int, ticket.split(','))) for ticket in others_ticket_numbers_matches]
 
-	return result
-
-def move_ship_towards_waypoint(waypoint, ship, value):
+	# Gather my ticket numbers
+	my_ticket_numbers_matches = re.findall(ticket_numbers_re, temp[1])[0]
+	my_ticket = [list(map(int, my_ticket_numbers_matches.split(',')))]
 	
-	ship[COORDS_Y] += value * waypoint[COORDS_Y]
-	ship[COORDS_X] += value * waypoint[COORDS_X]
+	return {'tickets_rules': rules, 'my_ticket': my_ticket, 'other_tickets': other_tickets}
 
-	if debug:
-		print(f'Moving ship by {value * waypoint[COORDS_X]} horizontally')
-		print(f'Moving ship by {value * waypoint[COORDS_Y]} vertically')
+def is_ticket_valid(rules, ticket):
+	valid = True
+	non_valid_num = None
 
-	return ship
+	for num in ticket:
 
-def waypoint_in_quadrant(waypoint):
-	if waypoint[COORDS_X] > 0 and waypoint[COORDS_Y] > 0:
-		return TOP_RIGHT
-	if waypoint[COORDS_X] > 0 and waypoint[COORDS_Y] < 0:
-		return BOTTOM_RIGHT
-	if waypoint[COORDS_X] < 0 and waypoint[COORDS_Y] < 0:
-		return BOTTOM_LEFT
-	if waypoint[COORDS_X] < 0 and waypoint[COORDS_Y] > 0:
-		return TOP_LEFT
+		if debug:
+			print(f'Analyzing number {num}')
 
-def execute_command(ship, waypoint, command):
+		for rule in rules:
+			rule_valid = False
 
-	# Move waypoint
-	if command['cmd'] == MOVE_WAYPOINT[EAST]:
-		waypoint[COORDS_X] += command['arg']
-	if command['cmd'] == MOVE_WAYPOINT[WEST]:
-		waypoint[COORDS_X] -= command['arg']
-	if command['cmd'] == MOVE_WAYPOINT[NORTH]:
-		waypoint[COORDS_Y] += command['arg']
-	if command['cmd'] == MOVE_WAYPOINT[SOUTH]:
-		waypoint[COORDS_Y] -= command['arg']
+			if debug:
+				print(f'Analyzing rule {rules[rule]} --- {valid}')
 
-	# Rotate the waypoint around the ship
-	if command['cmd'] == TURN_WAYPOINT_LEFT or command['cmd'] == TURN_WAYPOINT_RIGHT:
-		waypoint_x = waypoint[COORDS_X]
-		waypoint_y = waypoint[COORDS_Y]
+			for ranges in rules[rule]:
 
-		# If rotation by 90
-		if command['arg'] == 90:
+				if num >= ranges['min'] and num <= ranges['max']:
+					if debug:
+						print(f'Number {num} in range {ranges}')
 
-			temp = waypoint_x
-			waypoint_x = waypoint_y
-			waypoint_y = temp
+					rule_valid = True
+					break
 
-			if command['cmd'] == TURN_WAYPOINT_RIGHT:
-				waypoint_y = -waypoint_y
+			if rule_valid:
+				break
 
-			else:
-				waypoint_x = -waypoint_x
+		valid = valid and rule_valid
 
-		elif command['arg'] == 270:
+		if not valid:
+			non_valid_num = num
+			break
 
-			temp = waypoint_x
-			waypoint_x = waypoint_y
-			waypoint_y = temp
+	return non_valid_num
 
-			if command['cmd'] == TURN_WAYPOINT_RIGHT:
-				waypoint_x = -waypoint_x
-
-			else:
-				waypoint_y = -waypoint_y
-
-		# If rotation by 180 degrees
-		else:
-			waypoint_x = -waypoint_x
-			waypoint_y = -waypoint_y
-
-		waypoint[COORDS_X] = waypoint_x
-		waypoint[COORDS_Y] = waypoint_y
-		
-
-	# Move the ship towards the waypoint
-	if command['cmd'] == MOVE_SHIP_FORWARD:
-		ship = move_ship_towards_waypoint(waypoint, ship, command['arg'])
-
-	return ship, waypoint
 
 global debug
 debug = True
 
-input_data = read_input_data('../input.txt')
-commands = get_commands(input_data)
+data = read_input_data('../input.txt')
+#if debug:
+	#print(data)
 
-ship = SHIP_STARTING_COORDS
-waypoint = WAYPOINT_STARTING_COORDS
-
-if debug:
-	print(f'Ship status: {ship}')
-	print(f'Waypoint status: {waypoint}\n')
-
-for command in commands:
+total = []
+for ticket in data['other_tickets']:
+	print('\n', ticket)
 	
-	if debug:
-		print(f'Command: {command}')
+	non_valid_num = is_ticket_valid(data['tickets_rules'], ticket)
+	print(non_valid_num)
 
-	ship, waypoint = execute_command(ship, waypoint, command)
+	if non_valid_num != None:
+		total.append(non_valid_num)
 
-	if debug:
-		print(f'Ship status: {ship}')
-		print(f'Waypoint status: {waypoint}\n')
-
-print(ship)
-print(abs(ship[0]) + abs(ship[1]))
+print(sum(total))
