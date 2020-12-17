@@ -1,5 +1,6 @@
 from datetime import datetime 
 
+starting_time = datetime.now()
 
 def read_input_data(file):
 
@@ -26,7 +27,6 @@ global debug
 debug = False
 
 input_data = '2,15,0,9,1,20'
-#input_data = '0,3,6'
 
 data = read_input_data(input_data)
 if debug:
@@ -34,8 +34,6 @@ if debug:
 
 new_number = 0
 last_number = None
-starting_time = datetime.now()
-print(starting_time)
 
 prev_numbers = set()
 
