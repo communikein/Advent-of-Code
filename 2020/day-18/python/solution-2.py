@@ -20,20 +20,45 @@ def read_input_data(file):
 
 
 def compute_group(elements):
-	acc = int(elements[0])
-
+	
+	pre_compute = compute_additions(elements)
+	
+	acc = int(pre_compute[0])
 	index = 1
-	while index < len(elements):
-		
-		if elements[index] == OP_ADD:
-			acc += int(elements[index+1])
+	while index < len(pre_compute):
 
-		if elements[index] == OP_MUL:
-			acc *= int(elements[index+1])
+		if pre_compute[index] == OP_MUL:
+			acc *= int(pre_compute[index+1])
 
 		index += 1
 
 	return acc
+
+def compute_additions(elements):
+
+	index = 0
+	result = []
+	while index < len(elements):
+
+		if index < len(elements)-1 and elements[index+1] == OP_ADD:
+			acc = int(elements[index+0]) + int(elements[index+2])
+			result.append(str(acc))
+
+			index += 3
+		
+		elif elements[index] == OP_ADD:
+			acc = int(result[-1]) + int(elements[index+1])
+			del result[-1]
+			result.append(str(acc))
+
+			index += 2
+
+		else:
+			result.append(elements[index])
+
+			index += 1
+
+	return result
 
 def find_innermost_group(elements):
 
@@ -69,7 +94,7 @@ def replace_innermost_group_with_result(equation):
 def solve_equation(equation):
 
 	step_result = replace_innermost_group_with_result(equation)
-
+	
 	while len(step_result) > 1:
 		step_result = replace_innermost_group_with_result(step_result)
 
@@ -81,6 +106,7 @@ new_data = read_input_data('../input.txt')
 
 acc = 0
 for equation in new_data:
+
 	eq_result = solve_equation(equation)
 	acc += eq_result
 
