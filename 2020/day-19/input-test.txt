@@ -1,0 +1,36 @@
+0: 4 1 5
+3: 4 5 | 5 4
+1: 2 3 | 3 2
+2: 4 4 | 5 5
+4: "a"
+5: "b"
+
+ababbb
+bababa
+abbbab
+aaabbb
+aaaabbb
+
+
+
+
+
+
+0: aaaabb | aaabab | abbabb | abbbab || aabaab | aabbbb | abaaab | ababbb
+1: aaab | aaba | bbab | bbba || abaa | abbb | baaa | babb
+2: aa | bb
+3: ab | ba
+4: a
+5: b
+
+
+
+
+0: 4, 1, 5
+	4, [[4, 4], [5, 5]], [[4, 5], [5, 4]], 5
+1: [2, 3], [3, 2]
+	[[4, 4], [5, 5]], [[4, 5], [5, 4]]
+2: [4, 4], [5, 5]
+3: [4, 5], [5, 4]
+4: "a"
+5: "b"
